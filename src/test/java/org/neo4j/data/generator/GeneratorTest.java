@@ -21,6 +21,7 @@ package org.neo4j.data.generator;
 
 import static org.junit.Assert.assertThat;
 import static org.neo4j.data.generator.GeneratorTest.Countable.nodes;
+import static org.neo4j.data.generator.GeneratorTest.Countable.relationships;
 
 import java.util.Iterator;
 
@@ -29,7 +30,9 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.helpers.collection.PrefetchingIterator;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.test.TargetDirectory;
 
@@ -46,6 +49,7 @@ public class GeneratorTest
 
         GraphDatabaseService readDatabase = new EmbeddedGraphDatabase( storeDir );
         assertThat( readDatabase, containsAtLeast( 100, nodes ) );
+        assertThat( readDatabase, containsAtLeast( 100, relationships ) );
     }
 
     private Matcher<GraphDatabaseService> containsAtLeast( final int expectedCount, final Countable countable )
@@ -57,13 +61,11 @@ public class GeneratorTest
             {
                 GraphDatabaseService database = (GraphDatabaseService) o;
                 int counter = 0;
-                switch (countable) {
-                    case nodes:
-                        Iterator<Node> iterator = database.getAllNodes().iterator();
-                        while (iterator.hasNext() && counter < expectedCount) {
-                            iterator.next();
-                            counter++;
-                        }
+                Iterator<?> iterator = countable.iterable( database ).iterator();
+                while ( iterator.hasNext() && counter < expectedCount )
+                {
+                    iterator.next();
+                    counter++;
                 }
                 return counter >= expectedCount;
             }
@@ -77,7 +79,46 @@ public class GeneratorTest
         };
     }
 
-    enum Countable {
+    enum Countable
+    {
         nodes
+                {
+                    Iterable<?> iterable( GraphDatabaseService database )
+                    {
+                        return database.getAllNodes();
+                    }
+                },
+        relationships
+                {
+                    Iterable<?> iterable( final GraphDatabaseService database )
+                    {
+                        return new Iterable<Relationship>()
+                        {
+                            @Override
+                            public Iterator<Relationship> iterator()
+                            {
+                                return new PrefetchingIterator<Relationship>()
+                                {
+                                    long relationshipId = 0;
+
+                                    @Override
+                                    protected Relationship fetchNextOrNull()
+                                    {
+                                        try
+                                        {
+                                            return database.getRelationshipById( relationshipId++ );
+                                        }
+                                        catch ( NotFoundException e )
+                                        {
+                                            return null;
+                                        }
+                                    }
+                                };
+                            }
+                        };
+                    }
+                };
+
+        abstract Iterable<?> iterable( GraphDatabaseService database );
     }
 }

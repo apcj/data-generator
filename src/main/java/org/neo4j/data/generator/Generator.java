@@ -20,17 +20,26 @@
 package org.neo4j.data.generator;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 
 public class Generator
 {
+    enum RelationshipTypes implements RelationshipType {
+        NEXT
+    }
+
     public void generateInto( GraphDatabaseService database )
     {
         Transaction transaction = database.beginTx();
         try {
+            Node startNode = database.getReferenceNode();
             for (int i = 0; i < 1000; i++)
             {
-                database.createNode();
+                Node endNode = database.createNode();
+                startNode.createRelationshipTo( endNode, RelationshipTypes.NEXT );
+                startNode = endNode;
             }
             transaction.success();
         } finally {
