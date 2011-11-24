@@ -17,19 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.data.generator.domains.names;
+package org.neo4j.data.generator.domains.medicalrecords.professionals;
 
-import org.neo4j.data.generator.domains.gender.Gender;
+import static org.junit.Assert.assertEquals;
 
-public class FullNameGenerator
+import org.junit.Test;
+
+public class HealthProfessionalIdTest
 {
-    private NameGenerator maleFirstNameGenerator = new NameGenerator( NameGenerator.NameType.MaleFirstName );
-    private NameGenerator femaleFirstNameGenerator = new NameGenerator( NameGenerator.NameType.FemaleFirstName );
-    private NameGenerator lastNameGenerator = new NameGenerator( NameGenerator.NameType.LastName );
-
-    public FullName nextFullName(Gender gender) {
-        String firstName = Gender.Male.equals( gender ) ?
-                maleFirstNameGenerator.nextName() : femaleFirstNameGenerator.nextName();
-        return new FullName( firstName, lastNameGenerator.nextName() );
+    @Test
+    public void shouldFormatWithLeadingZeroes()
+    {
+        assertEquals("GMC0000123", new HealthProfessionalId( 123 ).toString());
     }
 }

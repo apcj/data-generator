@@ -17,19 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.data.generator.domains.names;
+package org.neo4j.data.generator.mapping.medicalrecords.professionals;
 
-import org.neo4j.data.generator.domains.gender.Gender;
+import org.junit.Test;
+import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfessionalPool;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.test.TargetDirectory;
 
-public class FullNameGenerator
+public class HealthProfessionalsRepositoryTest
 {
-    private NameGenerator maleFirstNameGenerator = new NameGenerator( NameGenerator.NameType.MaleFirstName );
-    private NameGenerator femaleFirstNameGenerator = new NameGenerator( NameGenerator.NameType.FemaleFirstName );
-    private NameGenerator lastNameGenerator = new NameGenerator( NameGenerator.NameType.LastName );
+    @Test
+    public void shouldStoreThePool()
+    {
+        String path = TargetDirectory.forTest( getClass() ).graphDbDir( true ).getPath();
+        GraphDatabaseService database = new EmbeddedGraphDatabase( path );
 
-    public FullName nextFullName(Gender gender) {
-        String firstName = Gender.Male.equals( gender ) ?
-                maleFirstNameGenerator.nextName() : femaleFirstNameGenerator.nextName();
-        return new FullName( firstName, lastNameGenerator.nextName() );
+        new HealthProfessionalsRepository( database ).store(
+                new HealthProfessionalPool( 2000 ).allProfessionals() );
+
+        database.shutdown();
     }
 }

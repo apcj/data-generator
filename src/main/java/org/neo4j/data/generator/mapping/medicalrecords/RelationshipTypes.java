@@ -17,19 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.data.generator.domains.names;
+package org.neo4j.data.generator.mapping.medicalrecords;
 
-import org.neo4j.data.generator.domains.gender.Gender;
+import org.neo4j.graphdb.RelationshipType;
 
-public class FullNameGenerator
+public enum RelationshipTypes implements RelationshipType
 {
-    private NameGenerator maleFirstNameGenerator = new NameGenerator( NameGenerator.NameType.MaleFirstName );
-    private NameGenerator femaleFirstNameGenerator = new NameGenerator( NameGenerator.NameType.FemaleFirstName );
-    private NameGenerator lastNameGenerator = new NameGenerator( NameGenerator.NameType.LastName );
-
-    public FullName nextFullName(Gender gender) {
-        String firstName = Gender.Male.equals( gender ) ?
-                maleFirstNameGenerator.nextName() : femaleFirstNameGenerator.nextName();
-        return new FullName( firstName, lastNameGenerator.nextName() );
-    }
+    HAD_ENCOUNTER, AT_LOCATION, WITH_PROFESSIONAL
 }

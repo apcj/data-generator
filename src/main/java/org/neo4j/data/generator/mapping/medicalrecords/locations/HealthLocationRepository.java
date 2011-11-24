@@ -17,15 +17,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.data.generator.domains.medicalrecords.encounters;
+package org.neo4j.data.generator.mapping.medicalrecords.locations;
 
-import org.joda.time.LocalDate;
+import java.util.List;
+
 import org.neo4j.data.generator.domains.medicalrecords.locations.HealthLocation;
-import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfessional;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
-public class Encounter
+public class HealthLocationRepository
 {
-    public Encounter( LocalDate date, HealthProfessional healthProfessional, HealthLocation healthLocation )
+    private GraphDatabaseService database;
+
+    public HealthLocationRepository( GraphDatabaseService database )
     {
+        this.database = database;
+    }
+
+    public void store( List<HealthLocation> locations )
+    {
+        Transaction transaction = database.beginTx();
+        try {
+            for ( HealthLocation location : locations )
+            {
+                Node node = database.createNode();
+                node.setProperty( "name", location.getName() );
+            }
+            transaction.success();
+        } finally {
+            transaction.finish();
+        }
     }
 }
