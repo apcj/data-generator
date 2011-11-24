@@ -20,6 +20,7 @@ public class MedicalRecordGenerator
     private FullNameGenerator fullNameGenerator = new FullNameGenerator();
     private GenderGenerator genderGenerator = new GenderGenerator();
     private DateOfBirthGenerator dateOfBirthGenerator = new DateOfBirthGenerator();
+    private EncounterSequenceGenerator encounterSequenceGenerator = new EncounterSequenceGenerator();
 
     public Patient nextPatient()
     {
@@ -29,7 +30,7 @@ public class MedicalRecordGenerator
         FullName name = fullNameGenerator.nextFullName( gender );
 
         Patient patient = new Patient( patientId, gender, dateOfBirth, name );
-        List<Encounter> encounters = new EncounterSequenceGenerator().encountersSince( dateOfBirth );
+        List<Encounter> encounters = encounterSequenceGenerator.encountersSince( dateOfBirth );
         for ( Encounter encounter : encounters )
         {
             patient.addEncounter(encounter);
