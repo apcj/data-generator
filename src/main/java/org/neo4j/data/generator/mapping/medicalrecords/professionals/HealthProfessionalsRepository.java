@@ -19,9 +19,12 @@
  */
 package org.neo4j.data.generator.mapping.medicalrecords.professionals;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfessional;
+import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfessionalId;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
@@ -29,6 +32,7 @@ import org.neo4j.graphdb.Transaction;
 public class HealthProfessionalsRepository
 {
     private GraphDatabaseService database;
+    private Map<HealthProfessionalId, Node> nodes = new HashMap<HealthProfessionalId, Node>();
 
     public HealthProfessionalsRepository( GraphDatabaseService database )
     {
@@ -43,6 +47,8 @@ public class HealthProfessionalsRepository
             for ( HealthProfessional professional : professionals )
             {
                 Node node = database.createNode();
+                nodes.put( professional.getId(), node );
+
                 node.setProperty( "type", HealthProfessional.class.getSimpleName() );
                 node.setProperty( "id", professional.getId().toString() );
                 node.setProperty( "gender", professional.getGender().name() );
@@ -59,5 +65,10 @@ public class HealthProfessionalsRepository
         } finally {
             transaction.finish();
         }
+    }
+
+    public Node findFor( HealthProfessional professional )
+    {
+        return nodes.get( professional.getId() );
     }
 }

@@ -25,7 +25,29 @@ import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfe
 
 public class Encounter
 {
+    private LocalDate date;
+    private HealthProfessional healthProfessional;
+    private HealthLocation healthLocation;
+
     public Encounter( LocalDate date, HealthProfessional healthProfessional, HealthLocation healthLocation )
     {
+        this.date = date;
+        this.healthProfessional = healthProfessional;
+        this.healthLocation = healthLocation;
+    }
+
+    public LocalDate getDate()
+    {
+        return date;
+    }
+
+    public HealthProfessional getHealthProfessional()
+    {
+        return healthProfessional;
+    }
+
+    public HealthLocation getHealthLocation()
+    {
+        return healthLocation;
     }
 }

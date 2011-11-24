@@ -21,14 +21,14 @@ package org.neo4j.data.generator.domains.medicalrecords.locations;
 
 public class HealthLocation
 {
-    private Object name;
+    private String name;
 
     public HealthLocation( String name )
     {
         this.name = name;
     }
 
-    public Object getName()
+    public String getName()
     {
         return name;
     }

@@ -27,9 +27,11 @@ import org.neo4j.data.generator.domains.gender.Gender;
 import org.neo4j.data.generator.domains.gender.GenderGenerator;
 import org.neo4j.data.generator.domains.medicalrecords.encounters.Encounter;
 import org.neo4j.data.generator.domains.medicalrecords.encounters.EncounterSequenceGenerator;
+import org.neo4j.data.generator.domains.medicalrecords.locations.HealthLocationPool;
 import org.neo4j.data.generator.domains.medicalrecords.patients.HealthServicePatientId;
 import org.neo4j.data.generator.domains.medicalrecords.patients.HealthServicePatientIdGenerator;
 import org.neo4j.data.generator.domains.medicalrecords.patients.Patient;
+import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfessionalPool;
 import org.neo4j.data.generator.domains.names.FullName;
 import org.neo4j.data.generator.domains.names.FullNameGenerator;
 
@@ -39,7 +41,12 @@ public class MedicalRecordGenerator
     private FullNameGenerator fullNameGenerator = new FullNameGenerator();
     private GenderGenerator genderGenerator = new GenderGenerator();
     private DateOfBirthGenerator dateOfBirthGenerator = new DateOfBirthGenerator();
-    private EncounterSequenceGenerator encounterSequenceGenerator = new EncounterSequenceGenerator();
+    private EncounterSequenceGenerator encounterSequenceGenerator;
+
+    public MedicalRecordGenerator( HealthProfessionalPool professionalPool, HealthLocationPool locationPool )
+    {
+        encounterSequenceGenerator = new EncounterSequenceGenerator( professionalPool, locationPool );
+    }
 
     public Patient nextPatient()
     {

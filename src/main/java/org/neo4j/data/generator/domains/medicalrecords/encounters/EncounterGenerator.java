@@ -25,11 +25,17 @@ import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfe
 
 public class EncounterGenerator
 {
-    private HealthProfessionalPool healthProfessionalPool = new HealthProfessionalPool( HealthProfessionalPool.POOL_SIZE );
-    private HealthLocationPool healthLocationPool = new HealthLocationPool();
+    private HealthProfessionalPool professionalPool;
+    private HealthLocationPool locationPool;
+
+    public EncounterGenerator( HealthProfessionalPool professionalPool, HealthLocationPool locationPool )
+    {
+        this.professionalPool = professionalPool;
+        this.locationPool = locationPool;
+    }
 
     public Encounter nextEncounter( LocalDate today )
     {
-        return new Encounter(today, healthProfessionalPool.nextProfessional(), healthLocationPool.nextLocation() );
+        return new Encounter(today, professionalPool.nextProfessional(), locationPool.nextLocation() );
     }
 }

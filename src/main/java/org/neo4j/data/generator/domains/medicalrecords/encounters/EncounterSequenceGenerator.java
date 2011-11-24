@@ -23,18 +23,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.neo4j.data.generator.domains.medicalrecords.locations.HealthLocationPool;
+import org.neo4j.data.generator.domains.medicalrecords.professionals.HealthProfessionalPool;
 
 public class EncounterSequenceGenerator
 {
     public static final int MAX_YEARS_BETWEEN_ENCOUNTERS = 10;
-    private EncounterGenerator encounterGenerator = new EncounterGenerator();
+    private EncounterGenerator encounterGenerator;
+
+    public EncounterSequenceGenerator( HealthProfessionalPool professionalPool, HealthLocationPool locationPool )
+    {
+        encounterGenerator = new EncounterGenerator( professionalPool, locationPool );
+    }
 
     public List<Encounter> encountersSince( LocalDate dateOfBirth )
     {
         ArrayList<Encounter> encounters = new ArrayList<Encounter>();
-        LocalDate currentDate =dateOfBirth;
+        LocalDate currentDate = dateOfBirth;
         LocalDate today = new LocalDate();
-        while (currentDate.isBefore( today ))
+        while ( currentDate.isBefore( today ) )
         {
             encounters.add( encounterGenerator.nextEncounter( today ) );
             currentDate = currentDate.plusDays( (int) (Math.random() * 365 * MAX_YEARS_BETWEEN_ENCOUNTERS) );

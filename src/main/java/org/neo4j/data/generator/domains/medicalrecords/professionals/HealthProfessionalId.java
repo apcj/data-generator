@@ -33,4 +33,32 @@ public class HealthProfessionalId
     {
         return String.format( "GMC%07d", number );
     }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() )
+        {
+            return false;
+        }
+
+        HealthProfessionalId that = (HealthProfessionalId) o;
+
+        if ( number != that.number )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return number;
+    }
 }

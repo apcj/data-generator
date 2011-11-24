@@ -30,14 +30,46 @@ import org.neo4j.data.generator.domains.names.FullName;
 public class Patient
 {
     private List<Encounter> encounters = new ArrayList<Encounter>();
+    private HealthServicePatientId id;
+    private Gender gender;
+    private LocalDate dateOfBirth;
+    private FullName name;
 
-    public Patient( HealthServicePatientId patientId, Gender gender, LocalDate dateOfBirth, FullName fullName )
+    public Patient( HealthServicePatientId id, Gender gender, LocalDate dateOfBirth, FullName name )
     {
-
+        this.id = id;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.name = name;
     }
 
     public void addEncounter( Encounter encounter )
     {
         encounters.add( encounter );
+    }
+
+    public List<Encounter> getEncounters()
+    {
+        return encounters;
+    }
+
+    public HealthServicePatientId getId()
+    {
+        return id;
+    }
+
+    public Gender getGender()
+    {
+        return gender;
+    }
+
+    public LocalDate getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public FullName getName()
+    {
+        return name;
     }
 }

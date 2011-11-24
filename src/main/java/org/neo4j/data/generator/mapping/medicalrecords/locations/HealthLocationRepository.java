@@ -19,7 +19,9 @@
  */
 package org.neo4j.data.generator.mapping.medicalrecords.locations;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.neo4j.data.generator.domains.medicalrecords.locations.HealthLocation;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -29,6 +31,7 @@ import org.neo4j.graphdb.Transaction;
 public class HealthLocationRepository
 {
     private GraphDatabaseService database;
+    private Map<String, Node> nodes = new HashMap<String, Node>();
 
     public HealthLocationRepository( GraphDatabaseService database )
     {
@@ -38,15 +41,24 @@ public class HealthLocationRepository
     public void store( List<HealthLocation> locations )
     {
         Transaction transaction = database.beginTx();
-        try {
+        try
+        {
             for ( HealthLocation location : locations )
             {
                 Node node = database.createNode();
+                nodes.put( location.getName(), node );
                 node.setProperty( "name", location.getName() );
             }
             transaction.success();
-        } finally {
+        }
+        finally
+        {
             transaction.finish();
         }
+    }
+
+    public Node findFor( HealthLocation healthLocation )
+    {
+        return nodes.get( healthLocation.getName() );
     }
 }

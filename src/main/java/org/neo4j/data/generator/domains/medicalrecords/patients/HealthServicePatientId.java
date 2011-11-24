@@ -55,4 +55,10 @@ public class HealthServicePatientId
     {
         return value != null ? value.hashCode() : 0;
     }
+
+    @Override
+    public String toString()
+    {
+        return value;
+    }
 }
