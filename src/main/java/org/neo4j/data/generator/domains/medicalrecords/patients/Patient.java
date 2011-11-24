@@ -17,17 +17,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.data.generator.domains.medicalrecords;
+package org.neo4j.data.generator.domains.medicalrecords.patients;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
+import java.util.List;
 
-public class HealthServiceIdGenerator
+import org.joda.time.LocalDate;
+import org.neo4j.data.generator.domains.gender.Gender;
+import org.neo4j.data.generator.domains.medicalrecords.encounters.Encounter;
+import org.neo4j.data.generator.domains.names.FullName;
+
+public class Patient
 {
-    AtomicLong seed = new AtomicLong( 0 );
+    private List<Encounter> encounters = new ArrayList<Encounter>();
 
-    public String nextId()
+    public Patient( HealthServicePatientId patientId, Gender gender, LocalDate dateOfBirth, FullName fullName )
     {
-        long number = seed.getAndIncrement();
-        return String.format( "NHS%010d", number );
+
+    }
+
+    public void addEncounter( Encounter encounter )
+    {
+        encounters.add( encounter );
     }
 }

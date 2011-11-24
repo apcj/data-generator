@@ -17,9 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.data.generator.domains.medicalrecords;
+package org.neo4j.data.generator.domains.medicalrecords.patients;
 
-public class Patient
+import java.util.concurrent.atomic.AtomicLong;
+
+public class HealthServicePatientIdGenerator
 {
+    AtomicLong seed = new AtomicLong( 0 );
 
+    public HealthServicePatientId nextId()
+    {
+        long number = seed.getAndIncrement();
+        return new HealthServicePatientId( String.format( "NHS%010d", number ) );
+    }
 }

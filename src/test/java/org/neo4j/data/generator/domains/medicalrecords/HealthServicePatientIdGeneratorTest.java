@@ -26,16 +26,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
+import org.neo4j.data.generator.domains.medicalrecords.patients.HealthServicePatientId;
+import org.neo4j.data.generator.domains.medicalrecords.patients.HealthServicePatientIdGenerator;
 
-public class HealthServiceIdGeneratorTest
+public class HealthServicePatientIdGeneratorTest
 {
     @Test
     public void shouldGenerateSequenceOfIds()
     {
-        HealthServiceIdGenerator idGenerator = new HealthServiceIdGenerator();
-        Set<String> uniqueIds = new HashSet<String>();
+        HealthServicePatientIdGenerator patientIdGenerator = new HealthServicePatientIdGenerator();
+        Set<HealthServicePatientId> uniqueIds = new HashSet<HealthServicePatientId>();
         for (int i = 0; i < 10; i++) {
-            uniqueIds.add( idGenerator.nextId() );
+            uniqueIds.add( patientIdGenerator.nextId() );
         }
         assertThat(uniqueIds.size(), equalTo(10));
     }
