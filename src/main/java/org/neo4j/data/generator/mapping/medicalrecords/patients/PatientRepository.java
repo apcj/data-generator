@@ -44,7 +44,7 @@ public class PatientRepository
     {
         Node patientNode = database.createNode();
         patientNode.setProperty( "type", Patient.class.getSimpleName() );
-        patientNode.setProperty( "id", patient.getId().toString() );
+        patientNode.setProperty( "patientId", patient.getId().toString() );
         patientNode.setProperty( "gender", patient.getGender().name() );
         patientNode.setProperty( "dateOfBirth", dateFormatter.print( patient.getDateOfBirth() ) );
         patientNode.setProperty( "firstName", patient.getName().getFirstName() );

@@ -47,6 +47,7 @@ public class HealthLocationRepository
             {
                 Node node = database.createNode();
                 nodes.put( location.getName(), node );
+                node.setProperty( "type", HealthLocation.class.getSimpleName() );
                 node.setProperty( "name", location.getName() );
             }
             transaction.success();

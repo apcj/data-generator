@@ -50,7 +50,7 @@ public class HealthProfessionalsRepository
                 nodes.put( professional.getId(), node );
 
                 node.setProperty( "type", HealthProfessional.class.getSimpleName() );
-                node.setProperty( "id", professional.getId().toString() );
+                node.setProperty( "professionalId", professional.getId().toString() );
                 node.setProperty( "gender", professional.getGender().name() );
                 node.setProperty( "firstName", professional.getName().getFirstName() );
                 node.setProperty( "lastName", professional.getName().getLastName() );
