@@ -43,7 +43,7 @@ public class EncounterSequenceGenerator
         LocalDate today = new LocalDate();
         while ( currentDate.isBefore( today ) )
         {
-            encounters.add( encounterGenerator.nextEncounter( today ) );
+            encounters.add( encounterGenerator.nextEncounter( currentDate ) );
             currentDate = currentDate.plusDays( (int) (Math.random() * 365 * MAX_YEARS_BETWEEN_ENCOUNTERS) );
         }
         return encounters;
