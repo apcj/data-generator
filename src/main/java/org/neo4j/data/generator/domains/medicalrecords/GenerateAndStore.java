@@ -31,7 +31,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
-public class GenerateToConsole
+public class GenerateAndStore
 {
     public static void main( String[] args )
     {
